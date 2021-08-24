@@ -30,10 +30,6 @@ var fight = function(enemyName) {
         console.log(`playerMoney: ${playerMoney}`);
         break;
       }
-      // if no (false), ask question again by running fight() again
-      else {
-        fight();
-      }
     }
     // remove enemy's health by subtracting the amount set in the playerAttack variable
     enemyHealth -= playerAttack;
@@ -99,8 +95,7 @@ var endGame = function() {
   // if player is still alive, player wins!
   if (playerHealth > 0) {
     window.alert(`Great job, you've survived the game! You now have a score of ${playerMoney}.`);
-  } 
-  else {
+  } else {
     window.alert("You've lost your robot in battle.");
   }
 
