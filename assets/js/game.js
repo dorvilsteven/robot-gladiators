@@ -12,6 +12,14 @@ var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 var enemyHealth = 50;
 var enemyAttack = 12;
 
+// Helper functions
+// function to generate a random numeric value
+var randomNumber = function(min, max) {
+  var value = Math.floor(Math.random() * (max-min+1)) + min;
+
+  return value;
+};
+
 var fight = function(enemyName) {
   // repeat and execute as long as the enemy-robot is alive 
   while(enemyHealth > 0 && playerHealth > 0) {
@@ -26,13 +34,13 @@ var fight = function(enemyName) {
       if (confirmSkip) {
         window.alert(`${playerName} has decided to skip this fight. Goodbye!`);
         // subtract money from playerMoney for skipping
-        playerMoney -= 10;
+        playerMoney = Math.max(0, (playerMoney - 10));
         console.log(`playerMoney: ${playerMoney}`);
         break;
       }
     }
     // remove enemy's health by subtracting the amount set in the playerAttack variable
-    enemyHealth -= playerAttack;
+    enemyHealth = Math.max(0, (enemyHealth - playerAttack));
     console.log(
       `${playerName} attacked ${enemyName}.`
     );
@@ -45,7 +53,7 @@ var fight = function(enemyName) {
       window.alert(`${enemyName} still has ${enemyHealth} health left.`);
     } 
     // remove player's health by subtracting the amount set in the enemyAttack variable
-    playerHealth -= enemyAttack;
+    playerHealth = Math.max(0, (playerHealth - enemyAttack));
     console.log(
       `${enemyName} attacked ${playerName}.`
     );
@@ -69,7 +77,7 @@ var startGame = function() {
     if (playerHealth > 0) {
       window.alert(`Welcome to Robot Gladiators! Round ${(i+1)}`);
       var pickedEnemyName = enemyNames[i];
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40, 60);
       fight(pickedEnemyName);
       // if we're not at the last enemy in the array
       if (playerHealth > 0 && i < enemyNames.length - 1) {
