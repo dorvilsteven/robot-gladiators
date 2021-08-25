@@ -15,25 +15,40 @@ var randomNumber = function(min, max) {
 function notEnough() {
   window.alert("You don't have enough money!");
 }
+// fight or skip
+var fightOrSkip = function() {
+  // Ask the players would they like to figh or run
+  var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+
+  // Conditional Recursive Function Call
+  if (promptFight === "" || promptFight === null) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+
+  // if player choses to skip
+  if (promptFight.toLowerCase() === "skip") {
+    // confirm player wants to skip
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+    // if yes (true), leave fight
+    if (confirmSkip) {
+      window.alert(`${playerInfo.name} has decided to skip this fight. Goodbye!`);
+      // subtract money from playerInfo.money for skipping
+      playerInfo.money = Math.max(0, (playerInfo.money - 10));
+      
+      return true;
+    }
+  }
+}
 
 var fight = function(enemy) {
   // repeat and execute as long as the enemy-robot is alive 
   while(enemy.health > 0 && playerInfo.health > 0) {
-
-    // Ask the players would they like to figh or run
-    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-    // if player choses to skip
-    if (promptFight === "skip" || promptFight === "SKIP") {
-      // confirm player wants to skip
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-      // if yes (true), leave fight
-      if (confirmSkip) {
-        window.alert(`${playerInfo.name} has decided to skip this fight. Goodbye!`);
-        // subtract money from playerInfo.money for skipping
-        playerInfo.money = Math.max(0, (playerInfo.money - 10));
-        console.log(`playerInfo.money: ${playerInfo.money}`);
-        break;
-      }
+    // ask player would they like to fight of skip this round
+    if (fightOrSkip()) {
+      // if fightOrSkip() returns true then we break out of loop
+      break;
     }
     // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
