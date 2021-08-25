@@ -43,40 +43,61 @@ var fightOrSkip = function() {
 }
 
 var fight = function(enemy) {
+
+  // keep track of who goes first
+  var isPlayerTurn = true;
+
+  // randomly change order 
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
+
   // repeat and execute as long as the enemy-robot is alive 
   while(enemy.health > 0 && playerInfo.health > 0) {
-    // ask player would they like to fight of skip this round
-    if (fightOrSkip()) {
-      // if fightOrSkip() returns true then we break out of loop
-      break;
-    }
-    // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
-    var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-    enemy.health = Math.max(0, (enemy.health - damage));
-    console.log(
-      `${playerInfo.name} attacked ${enemy.name}. ${enemy.name} still has ${enemy.health} health left.`
-    );
-    // check enemy's health
-    if (enemy.health <= 0) {
-      window.alert(enemy.name + " has died!");
-      playerInfo.money += 25;
-      break;
+    
+    if (isPlayerTurn) {
+      
+      // ask player would they like to fight of skip this round
+      if (fightOrSkip()) {
+        // if fightOrSkip() returns true then we break out of loop
+        break;
+      }
+
+      // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
+      var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+      enemy.health = Math.max(0, (enemy.health - damage));
+      console.log(
+        `${playerInfo.name} attacked ${enemy.name}. ${enemy.name} still has ${enemy.health} health left.`
+      );
+
+      // check enemy's health
+      if (enemy.health <= 0) {
+        window.alert(enemy.name + " has died!");
+        playerInfo.money += 25;
+        break;
+      } else {
+        window.alert(`${enemy.name} still has ${enemy.health} health left.`);
+      }
+
     } else {
-      window.alert(`${enemy.name} still has ${enemy.health} health left.`);
-    } 
-    // remove player's health by subtracting the amount set in the enemyAttack variable
-    var damage = randomNumber(enemy.attack - 3, enemy.attack);
-    playerInfo.health = Math.max(0, (playerInfo.health - damage));
-    console.log(
-      `${enemy.name} attacked ${playerInfo.name}. ${playerInfo.name} still has ${playerInfo.health} health left.`
-    );
-    // check player's health
-    if (playerInfo.health <= 0) {
-      window.alert(`${playerInfo.name} has died!`);
-      break;
-    } else {
-      window.alert(`${playerInfo.name} still has ${playerInfo.health} health left.`);
+
+      // remove player's health by subtracting the amount set in the enemyAttack variable
+      var damage = randomNumber(enemy.attack - 3, enemy.attack);
+      playerInfo.health = Math.max(0, (playerInfo.health - damage));
+      console.log(
+        `${enemy.name} attacked ${playerInfo.name}. ${playerInfo.name} still has ${playerInfo.health} health left.`
+      );
+
+      // check player's health
+      if (playerInfo.health <= 0) {
+        window.alert(`${playerInfo.name} has died!`);
+        break;
+      } else {
+        window.alert(`${playerInfo.name} still has ${playerInfo.health} health left.`);
+      }
     }
+    // switch turn order for next round
+    isPlayerTurn = !isPlayerTurn;
   }
 };
 
